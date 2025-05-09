@@ -1,4 +1,4 @@
-# wkds
+# ds
 
 workclock software written with assistance of Deepseek
 
