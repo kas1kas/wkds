@@ -1,0 +1,36 @@
+remove bullseye check
+edit rpi_headless_wifi_install.sh
+change or delete check_os_version () {}
+
+
+wificonnect starts OK when no wifi connection
+but the wordclock has already started and claimed port 80
+so when wifi connect want to use it it gives an error Address already in use
+solution: use port 8080
+../src/http_server.py
+
+
+password characters:
+change
+../ui/index.html
+
+
+on your phone
+click wifi
+look for RPI-woordklok
+select
+ignore messages about Internet may not be available
+connect
+your phone is now connected to the wordclock
+start a web browser (chrome, edge or whatever you use)
+type 192.168.42.1:8080
+
+a page opens and shows your network
+if not click on the down arrow and select the dot behind your network
+type your password
+click connect
+
+the clock is now connected to the internet!!
+the correct time will appear in a litle while
+
+

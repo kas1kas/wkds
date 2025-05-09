@@ -1,0 +1,1 @@
+nmcli conn con-name "qwerty" add ifname wlan0 type wifi ssid "qwerty" wifi-sec.key-mgmt wpa-psk wifi-sec.psk "Ik-heb-1-lange="
