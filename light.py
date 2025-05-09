@@ -39,7 +39,7 @@ def load_config(config_file):
 
 
 if __name__ == '__main__':
-    config =load_config("config.json") 
+    config =load_config("config3.2.json") 
     woordklok = config.get("WOORDKLOK")
     inval =  config.get("LUT_IN").get(woordklok,{})
     uitval=  config.get("LUT_OUT").get(woordklok,{})

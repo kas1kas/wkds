@@ -1,1 +1,0 @@
-@reboot sudo python3 /home/pi/ds/wk.py > /home/pi/ds/cronlog.log 2>&1
