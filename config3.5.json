@@ -11,11 +11,11 @@
     "LED_DMA": 10,
     "LED_CHANNEL": 0,
     "BACKGROUND_COLOR": [0, 0, 0],
-    "LETTER_INACTIVE_COLOR": [0, 90, 0],
     "LETTER_ACTIVE_COLOR": [255, 135, 65],
-    "DOT_INACTIVE_COLOR": [0, 0, 0],
     "DOT_ACTIVE_COLOR": [255, 135, 65],
-    "LUT_IN":   [  0.2,  1,  2,  3,  5, 10,  20,  30],
+    "LETTER_INACTIVE_COLOR": [0, 0, 0],
+    "DOT_INACTIVE_COLOR": [0, 0, 0],
+    "LUT_IN":   [  0.1,  1,  2,  3,  5, 10,  20,  30],
     "LUT_OUT":  [1, 10, 20, 30, 40,  60, 100, 160, 200],
     "MINUTE_DOTS": {
         "MLT": 1,
@@ -109,16 +109,16 @@
             "11": ["FIVE", "TO"]
         }
     },
-    "LETTER_GRID_NL_BACK": [
-        "F J I V C S I E T E H",
-        "R O O V Z W S N E I T",
-        "T R A W K T M R E V O",
-        "R E V O H P S F L A H",
-        "S N E E G H T R O O V",
-        "E I R D C E N E E W T",
-        "S E Z F J I V R E I V",
-        "N E G E N X N E V E Z",
-        "F L E S N E I T H C A",
-        "R U U T I F L A A W T"
+    "LETTER_GRID_NL": [
+        "H E T E I S C V I J F",
+        "T I E N S W Z V O O R",
+        "O V E R M T K W A R T",
+        "H A L F S I H O V E R",
+        "V O O R T H G E E N S",
+        "T W E E K A S D R I E",
+        "V I E R V I J F Z E S",
+        "Z E V E N X N E G E N",
+        "A C H T I E N S E L F",
+        "T W A A L F I T U U R"
     ]
 }
