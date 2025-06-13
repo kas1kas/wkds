@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Word Clock Control</title>
+    <title>Woordklok Control</title>
     <!-- Include Spectrum CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.1/spectrum.min.css">
     <style>
@@ -82,7 +82,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Word Clock</h1>
+        <h1>Woordklok</h1>
         <div class="brightness-display">
             <span>Brightness: </span>
             <span id="brightnessValue">0</span>
@@ -107,6 +107,8 @@
                 <option value="random" {% if initial_clock_type == "random" %}selected{% endif %}>Random</option>
                 <option value="rainbow" {% if initial_clock_type == "rainbow" %}selected{% endif %}>Rainbow</option>
                 <option value="dark" {% if initial_clock_type == "dark" %}selected{% endif %}>Dark</option>
+                <option value="test" {% if initial_clock_type == "test" %}selected{% endif %}>Test</option>
+
             </select>
             <label for="purist">Purist Mode:</label>
             <select id="purist">
@@ -115,6 +117,7 @@
             </select>
             <button id="updateSettings">Update Settings</button>
         </div>
+        <h6>GraWoosh</h6>
     </div>
 
     <!-- Include jQuery (required for Spectrum) -->

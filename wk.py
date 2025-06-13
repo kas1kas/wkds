@@ -1,4 +1,5 @@
-# woordklok v3.51
+# woordklok v5.25
+# for 11x10 and 16x16 grid
 import argparse
 import json
 import logging
@@ -18,32 +19,51 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 # Initialize Flask app
 app = Flask(__name__)
 
+# create the core routines as Class
 class WordClock:
     def __init__(self, config):
-        self.release = config["RELEASE"]
         self.purist = config["PURIST"]
+        self.woordklok = config["WOORDKLOK"]
         self.language = config["LANGUAGE"]
+        self.grid = config["GRID"]
         self.light_interval = config["LIGHT_INTERVAL"]
-        self.led_count = config["LED_COUNT"]
         self.led_pin = config["LED_PIN"]
         self.led_freq_hz = config["LED_FREQ_HZ"]
         self.led_dma = config["LED_DMA"]
         self.led_channel = config["LED_CHANNEL"]
         self.background_color = config["BACKGROUND_COLOR"]
         self.letter_active_color = config["LETTER_ACTIVE_COLOR"]
-        self.dot_inactive_color = config["DOT_INACTIVE_COLOR"]
         self.dot_active_color = config["DOT_ACTIVE_COLOR"]
-        self.minute_dots = config["MINUTE_DOTS"]
+        self.dot_inactive_color = config["DOT_INACTIVE_COLOR"]
+        self.minute_dots = config["MINUTE_DOTS"].get(str(self.grid), {}) 
         self.clock_type = config["CLOCK_TYPE"]
-        self.cls_color = config["CLS_COLOR"]
-        self.lut_in =  config.get("LUT_IN")
-        self.lut_out=  config.get("LUT_OUT")
+        self.rand_color = config["RAND_COLOR"]
+        self.lut_in =  config.get("LUT_IN").get(self.woordklok,{})
+        self.lut_out=  config.get("LUT_OUT").get(self.woordklok,{}) 
         self.CURSOR_UP = "\x1b[2A"
         self.minute_blocks = config["MINUTE_BLOCKS"].get(self.language,{})
-        self.words = config["WORDS"].get(self.language,{})
+        self.words = config["WORDS"].get(self.language, {}).get(str(self.grid), {})
         self.min_block_check = config["MIN_BLOCK_CHECK"].get(self.language,{})
 
-        logging.info(f"Language: {self.language}") 
+        if self.grid=="16":
+          self.led_count = 256
+          self.columns =16
+          self.rows=16
+        else:
+          self.led_count = 114
+          self.columns = 11
+          self.rows = 10
+
+        logging.info(f"Design   : Woosh") 
+        logging.info(f"Made by  : GraWoosh Labs") 
+        logging.info(f"Woordklok: {self.woordklok}")
+        logging.info(f"Clock    : {self.clock_type}") 
+        logging.info(f"Random   : {self.rand_color}") 
+        logging.info(f"Language : {self.language}")
+        logging.info(f"Grid     : {self.grid}") 
+        logging.info(f"Sensor   : TSL2591") 
+        logging.info(f"Lut In   : {self.lut_in}")
+        logging.info(f"Lut Out  : {self.lut_out}")
         # Initialize LED strip
         try:
             self.strip = PixelStrip(
@@ -64,52 +84,49 @@ class WordClock:
             logging.error(f"Failed to initialize TSL2591 light sensor: {e}")
             exit(1)
 
-    #subs
+    # subs ----------------------------------------------------------------------------------
+
+    def set_random_led(self, tint):
+       self.setcolor_x_y(random.randint(0,10),random.randint(0,9),self.random_color(tint))
+       
+    def random_color(self, tint):
+      if tint == "blue":
+         r = random.randint(  29, 69)   # shades of blue 
+         g = random.randint(  31, 71)
+         b = random.randint(105,245)
+      elif tint == "orange":
+         r = random.randint( 100,155)   # shades of orange 
+         g = random.randint(  20, 40)
+         b = random.randint(   0,  2)
+      return (r, g, b) 
+      
+    def cls(self):
+        for i in range(self.led_count):
+           self.set_led_color(i, self.background_color)
 
     def set_led_color(self, led_index, color):
          self.strip.setPixelColor(led_index, Color(color[0], color[1], color[2]))
 
     def map_grid_to_led(self, grid_index):
-        if grid_index < 0 or grid_index > 109:
-            return -1                          # Invalid index
-        col = grid_index % 11                  # Column (0-10)
-        row = grid_index // 11                 # Row (0-9, top to bottom)
-        if col % 2 == 0:                       # Even columns: top to bottom
-            return 2 + (col * 10) + row
-        else:                                  # Odd columns: bottom to top
-            return 2 + (col * 10) + (9 - row)
-
-    def setcolor_x_y(self, x, y, b):
-        if x < 0 or x > 10 or y < 0 or y > 9:
-            return -1                          # Invalid coordinates
-        if x % 2 == 0:                         # Even columns: top to bottom
-            self.set_led_color(2 + (x * 10) + y, b)
-        else:                                  # Odd columns: bottom to top
-            self.set_led_color(2 + (x * 10) + (9 - y), b)
-
-    def random_color(self):
-      r = random.randint(  29, 69)   #  29, 69  shades of blue 
-      g = random.randint(  31, 71)   #  31, 71
-      b = random.randint(105,245)    # 105,245
-      return (r, g, b)
-
-    def kwheel(self, pos):
-         if pos < 85:
-            return (pos * 3, 255 - pos * 3, 0), Color(255-pos * 3, pos * 3, 255)
-         elif pos < 170:
-            pos -= 85
-            return (255 - pos * 3, 0, pos * 3), Color(pos * 3, 255, 255-pos * 3)
-         else:
-            pos -= 170
-            return (0, pos * 3, 255 - pos * 3), Color(255, 255-pos * 3, pos * 3)
-
-    def set_random_led(self):
-      self.set_led_color(random.randint(0,111), self.random_color())
-
-    def cls(self):
-        for i in range(self.led_count):
-           self.set_led_color(i, self.background_color)
-
+        if self.grid == "16":                              #16x16 grid
+           grd = grid_index + 34 + 5 * (grid_index // 11) 
+           col = grd % 16                                  # Column (0-10)
+           row = grd // 16                                 # Row (0-15, top to bottom)
+           if col % 2 == 0:                                # even columns: bottom to top
+               led_index = (col * 16) + (15 - 1 - row)
+           else:                                           # odd columns: top to bottom
+               led_index = (col * 16) + row + 1
+           return led_index
+        else:
+                                                           # For 11x10 grid
+            col = grid_index % self.columns
+            row = grid_index // self.columns
+            if col % 2 == 0:                               # Even columns: top to bottom
+                led_index = 2 + (col * self.rows) + row    # rows = 10
+            else:                                          # Odd columns: bottom to top
+                led_index = 2 + (col * self.rows) + (self.rows - 1 - row)
+            return led_index
+    
     def update_brightness(self):
       try:
           light_data = self.light_sensor.get_current()
@@ -127,50 +144,74 @@ class WordClock:
             for i in range(start, end + 1):
                 led_index = self.map_grid_to_led(i)
                 if led_index != -1:
-                    self.set_led_color(led_index, self.letter_active_color)
-
+                    self.set_led_color(led_index, self.letter_active_color) 
+                    
     def update_clock(self):
         """Update the clock display based on the current time."""
         now = time.localtime()
         hours = now.tm_hour % 12 or 12
         minutes = now.tm_min
-
-       # Set minute dots
+        if self.clock_type == "test":
+            hours = 3
+            minutes = 0
+        # -------------------------------------------------Set minute dots
         minute_dots = minutes % 5
         for dot, index in self.minute_dots.items():
             self.set_led_color(index, self.dot_active_color \
                   if minute_dots >= list(self.minute_dots.keys()).index(dot) + 1 else self.dot_inactive_color)
-
-        # Determine minute phrase and hour
+        # -------------------------------------------------Determine minute phrase and hour
         minute_block = minutes // 5
-        adjusted_hours = hours
-
-        # Show "HET IS"
+        adjusted_hours = hours    
+        # -------------------------------------------------Show "HET IS"
         if not self.purist:
             if self.language == "NL":
-              self.activate_word("HET")
+                self.activate_word("HET")
             elif self.language == "EN":
-              self.activate_word("IT")
-            self.activate_word("IS")
-
-        # Adjust hour starting at language determined minutes
+                self.activate_word("IT")
+            self.activate_word("IS")    
+        # -------------------------------------------------Adjust hour per language minutes
         if minute_block >= self.min_block_check:
             adjusted_hours = (hours % 12) + 1
             if adjusted_hours == 13:
                 adjusted_hours = 1
-
-        # Activate words based on minute block
+        # -------------------------------------------------Activate words based on minute block
         if self.language == "NL":
-            hour_words = ["EEN", "TWEE", "DRIE", "VIER", "VIJF2", "ZES", "ZEVEN", "ACHT", "NEGEN", "TIEN2", "ELF", "TWAALF"]
+            hour_words = ["EEN", "TWEE", "DRIE", "VIER", "VIJF2", "ZES", \
+                          "ZEVEN", "ACHT", "NEGEN", "TIEN2", "ELF", "TWAALF"]
         elif self.language == "EN":
-            hour_words = ["ONE", "TWO", "THREE", "FOUR", "FIVE2", "SIX", "SEVEN", "EIGHT", "NINE", "TEN2", "ELEVEN", "TWELVE"]
-
+            hour_words = ["ONE", "TWO", "THREE", "FOUR", "FIVE2", "SIX", \
+                          "SEVEN", "EIGHT", "NINE", "TEN2", "ELEVEN", "TWELVE"]
         if str(minute_block) in self.minute_blocks:
             for word in self.minute_blocks[str(minute_block)]:
                 self.activate_word(word)
             self.activate_word(hour_words[adjusted_hours - 1])
-
         self.strip.show()
+
+    def setcolor_x_y(self, x, y, color):                   #for rainbow effect
+        if self.grid == "16":
+            adjusted_x = x + 2                             # Skip the first two columns
+            adjusted_y = y + 3                             # and first three rows
+            if adjusted_x % 2 == 0:                        # Even columns: top to bottom
+                led_index = (adjusted_x * 16) + adjusted_y
+            else:                                          # Odd columns: bottom to top
+                led_index = (adjusted_x * 16) + (15 - adjusted_y)
+        else:                                              # For 11x10 grid
+            if x % 2 == 0:                                 # Even columns: top to bottom
+                led_index = 2 + (x * 10) + y
+            else:                                          # Odd columns: bottom to top
+                led_index = 2 + (x * 10) + (9 - y)
+        self.set_led_color(led_index, color)
+    
+    def kwheel(self, pos):
+         if pos < 85:
+            return (pos * 3, 255 - pos * 3, 0), Color(255-pos * 3, pos * 3, 255)
+         elif pos < 170:
+            pos -= 85
+            return (255 - pos * 3, 0, pos * 3), Color(pos * 3, 255, 255-pos * 3)
+         else:
+            pos -= 170
+            return (0, pos * 3, 255 - pos * 3), Color(255, 255-pos * 3, pos * 3)
+    # End Subs ------------------------------------------------------------------------------
 
 def load_config(config_file):
     """Load configuration from a JSON file."""
@@ -191,20 +232,7 @@ def load_config(config_file):
         return None
 
 # Initialize word clock
-# Parse command-line arguments
-parser = argparse.ArgumentParser(description="Run the Word Clock.")
-parser.add_argument(
-    "--release", 
-    type=str, 
-    default="3.5",  # Default value if --release is not provided
-    help="Release version of the config file (e.g., 3). Default is '3.5'."
-)
-args = parser.parse_args()
-# Use the provided release value
-release = args.release
-
-# ----------------------------------------Release is fixed here---------
-config = load_config("config3.5.json")
+config = load_config("config.json")
 word_clock = WordClock(config)
 
 # Flask routes
@@ -215,7 +243,7 @@ def index():
     initial_language = word_clock.language
     initial_clock_type = word_clock.clock_type
     initial_purist = word_clock.purist
-
+        
     return render_template(
         "index.html",
         initial_color=initial_color,
@@ -233,6 +261,7 @@ def set_color():
         blue = int(request.form.get("blue"))
 
         word_clock.letter_active_color = (red, green, blue)
+        word_clock.dot_active_color = (red, green, blue)
 
         return "Color updated successfully!", 200
     except Exception as e:
@@ -246,7 +275,7 @@ def set_language():
         language = request.form.get("language")
         if language in ["NL", "EN"]:
             word_clock.language = language
-            word_clock.words = config["WORDS"].get(language, {})
+            word_clock.words = config["WORDS"].get(language, {}).get(word_clock.grid, {})
             word_clock.minute_blocks = config["MINUTE_BLOCKS"].get(language, {})
             word_clock.min_block_check = config["MIN_BLOCK_CHECK"].get(language, {})
             return "Language updated successfully!", 200
@@ -261,7 +290,7 @@ def set_clock_type():
     """Set the clock type."""
     try:
         clock_type = request.form.get("clock_type")
-        if clock_type in ["regular", "random", "rainbow", "dark"]:
+        if clock_type in ["regular", "random", "rainbow", "dark", "test"]:
             word_clock.clock_type = clock_type
             return "Clock type updated successfully!", 200
         else:
@@ -314,26 +343,30 @@ def run_clock():
     """Run the word clock in a separate thread."""
     try:
       while True:
-        if onlyx(3):
+        if onlyx(word_clock.light_interval):
            word_clock.update_brightness()
 
         if word_clock.clock_type == "regular":
            word_clock.cls()
 
-        if word_clock.clock_type == "dark":
+        elif word_clock.clock_type == "test":
+           while True: 
+              i = int(input ("index: "))
+              word_clock.set_led_color(i, word_clock.letter_active_color)
+              word_clock.strip.show()
+
+        elif word_clock.clock_type == "dark":
            word_clock.cls()
            word_clock.strip.show()
            time.sleep(1)
 
         elif word_clock.clock_type == "random":
-           a = random.randint(0,word_clock.led_count)
-           b = word_clock.random_color()
-           word_clock.set_led_color(a,b)
-
+            word_clock.set_random_led(word_clock.rand_color)
+            
         elif word_clock.clock_type == "rainbow":
            for j in range(256 * 5):
-               for x in range(11):          #width()):
-                   for y in range(10):      #height()):
+               for x in range(11):
+                   for y in range(10):
                       k=(x * y + j) & 255
                       b,w = word_clock.kwheel(k)
                       word_clock.setcolor_x_y(x,y,b)
