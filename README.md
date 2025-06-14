@@ -37,4 +37,4 @@ edit the config.json file before first use
 ### 2 mini
 - you only need to connecct the leds and the light sensor as described above
 
-![Image 1](https://github.com/kas1kas/ds/im1.jpg)
+![Image 1](https://github.com/kas1kas/ds/woordklok aansluiten - Frame 1.jpg)
