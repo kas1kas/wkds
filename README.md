@@ -36,4 +36,4 @@ edit the config.json file before first use
 ### 2 mini
 - you only need to connecct the leds and the light sensor as described above
 
-![image 1](https://github.com/kas1kas/ds/blob/main/electrical1.jpg)
+![image 1](https://github.com/kas1kas/ds/blob/main/support/electrical1.jpg)
