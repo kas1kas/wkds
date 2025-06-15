@@ -3,12 +3,8 @@
 Software to light up your matrix wordclock
 
 ## Hardware
-- Raspberry Pi-3B+
-or
-- Raspberri Pi Zero2W
-- LED string WS281B
-or
-- LED WS218B 16x16 panel
+- Raspberry Pi-3B+ or Raspberri Pi Zero2W
+- LED string WS281B or WS218B 16x16 LED panel
 - lightsensor: TSL 2591
 - wordclock frame
 - wordclock letterplate one per language
