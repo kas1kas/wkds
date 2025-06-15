@@ -3,7 +3,7 @@
 Software to light up your matrix wordclock
 
 ## Hardware
-- Raspberry Pi-3B+ or Raspberri Pi Zero2W
+- Raspberry Pi **3B+** or Raspberri Pi **Zero2W**
 - LED string WS281B or WS218B 16x16 LED panel
 - lightsensor: TSL 2591
 - wordclock frame
@@ -11,7 +11,7 @@ Software to light up your matrix wordclock
 
 ## Software
 - Python3 + html
-- (created with assistance of Deepseek)
+- created with assistance of Deepseek V2
 - Remote control via the integrated webapp.
 - Configuration with a json file for all settings and light sensor adjustment.
 
