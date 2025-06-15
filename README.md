@@ -1,5 +1,5 @@
 # Woordklok ds
-## Workclock software (created with assistance of Deepseek)
+## Workclock software
 Software to light up your matrix wordclock
 
 ## Hardware
@@ -10,9 +10,12 @@ or
 or
 - LED WS218B 16x16 panel
 - lightsensor: TSL 2591
+- wordclock frame
+- wordclock letterplate one per language
 
 ## Software
 - Python3 + html
+- (created with assistance of Deepseek)
 - Remote control via the integrated webapp.
 - Configuration with a json file for all settings and light sensor adjustment.
 
