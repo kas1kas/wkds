@@ -12,7 +12,7 @@
 - sudo pip3 install flask-restx rpi-ws281x python-tsl2591 --break-system-packages
 ## 4 install wordclock software
 - git clone https://github.com/kas1kas/ds.git
-- cp ds/alias.txt .bash_aliases
+- sudo cp ds/alias.txt .bash_aliases
 - crontab ds/crontab.txt
 ## 5 install WiFi-connect
 - git clone https://github.com/kas1kas/wifi-connect.git
