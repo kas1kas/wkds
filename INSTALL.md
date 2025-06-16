@@ -24,17 +24,18 @@
 using phone
 - make sure your phone is connected to the local WiFi network
 - click/select Wi-Fi (icon) on your phone
-- look for RPI-woordklok
+- look for **RPI-woordklok**
 - select (ignore messages about Internet may not be available)
 - connect
 - your phone is now connected to the wordclock
 - start a web browser (chrome, edge, ...)
-- type 192.168.42.1:8080
+- type **192.168.42.1:8080**
 ### a page opens and shows your network
 if not, click on the down arrow and select the dot behind your network
 - type your password
 - click connect
-- the wordklock clock is now connected to the internet!!
-- the correct time will appear in a little while
+- the wordklock clock is now connected to your WiFi
+- you phone should automatically re-connect to your wifi
+- the correcrt time will appear in a little while
 
 
