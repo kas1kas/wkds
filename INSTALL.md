@@ -12,13 +12,16 @@
 - sudo pip3 install flask-restx rpi-ws281x python-tsl2591 --break-system-packages
 ## 4 install wordclock software
 - git clone https://github.com/kas1kas/ds.git
-- sudo cp ds/alias.txt .bash_aliases
-- crontab ds/crontab.txt
+- ds/setwk.sh
 ## 5 install WiFi-connect
 - git clone https://github.com/kas1kas/wifi-connect.git
 - cd wifi-connect/scripts
 - sudo ./rpi_headless_wifi_install.sh
 ## 6 reboot
+The clock should start automatically within a minute
+
+## Moving the Wordclock
+When moving the wordclock to another location, you can connect to the new wifi network with the procedure below. If you give this clock to someone, make sure to give them this procedure.
 
 ## 1 Set IP address on new network
 using phone
