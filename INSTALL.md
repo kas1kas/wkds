@@ -30,15 +30,16 @@ using phone
 - look for **RPI-woordklok**
 - select (ignore messages about Internet may not be available)
 - connect
-- your phone is now connected to the wordclock
+- your phone is now connected to the WiFi of the wordclock
 - start a web browser (chrome, edge, ...)
 - type **192.168.42.1:8080**
 ### a page opens and shows your network
-if not, click on the down arrow and select the dot behind your network
+if not, click on the down arrow and your network
 - type your password
 - click connect
 - the wordklock clock is now connected to your WiFi
-- you phone should automatically re-connect to your wifi
-- the correcrt time will appear in a little while
+- you phone automatically re-connects to the wifi
+- the correct time will appear after a while
+
 
 
