@@ -29,8 +29,9 @@ edit the config.json file before first use
 - place the wordclock frame with the face side on the table;  you will be working on the back side
 - arrange the strings as 11 columns on your wordclock frame starting on the right of the frame
 - place one single led at each corner
-- solder the led power and signal connectors together. start with the led in the lower right corner, connect this to the led in the upper right corner, then connect to the top of the right most ledstring. At the bottom, connect the first string to the second, at the top connect the second to the third, etc end with the two leds in the corners.
+- solder the led power and signal connectors together. start with the led in the lower left corner, connect this to the led in the upper left corner, then connect to the top of the left most ledstring. At the bottom, connect the first string to the second, at the top connect the second to the third, etc end with the two leds in the corners.
 - connect the leds to a 5 volt power source and the signal line to pin x of the raspberry Pi
+- a USB-C Breakout Board ideal for the 5V
 - connect the light sensor to the raspberry pi header as shown in the diagram.
   
 ### 2 mini
