@@ -1,4 +1,4 @@
-#v3.5 compatible
+#v5.2 compatible
 from python_tsl2591 import tsl2591
 import sys
 import bisect
@@ -39,9 +39,9 @@ def load_config(config_file):
 
 
 if __name__ == '__main__':
-    config =load_config("config3.5.json") 
-    inval =  config.get("LUT_IN")
-    uitval=  config.get("LUT_OUT")
+    config =load_config("config.json") 
+    inval =  config.get("LUT_IN").get(self.woordklok,{})
+    uitval=  config.get("LUT_OUT").get(self.woordklok,{})
     logging.info(f"in :{inval}")
     logging.info(f"uit:{uitval}")
     lineaal = "├───┴───┴───┴───┴───┼───┴───┴───┴───┴───┤"
