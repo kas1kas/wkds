@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script to set up crontab and aliases for Raspberry Pi OS
+# Script to set up crontab and aliases
 
 # Check if we're running as root
 if [ "$(id -u)" -eq 0 ]; then
@@ -8,7 +8,7 @@ if [ "$(id -u)" -eq 0 ]; then
     exit 1
 fi
 
-# Overwrite crontab with our single entry
+# Overwrite crontab
 echo "Setting up crontab (overwriting any existing entries)..."
 echo "@reboot sudo python3 /home/pi/ds/wk.py" | crontab -
 
