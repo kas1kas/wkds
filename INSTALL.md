@@ -7,6 +7,7 @@
 ## 2 sudo raspi-config
 - interface options - enable I2C
 ## 3 install packages
+- make sure you are in: /home/pi
 - sudo apt install git python3-pip
 - sudo pip3 install flask-restx rpi-ws281x python-tsl2591 --break-system-packages
 ## 4 install wordclock software
