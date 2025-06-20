@@ -35,7 +35,17 @@ edit the config.json file before first use
 - connect the light sensor to the raspberry pi header as shown in the diagram.
   
 ### 2 mini
-- you only need to connecct the leds and the light sensor as described above
+- you only need to connect the leds and the light sensor as described above
+
+## The frame and letterplate
+### 1 original
+- MDF frame
+- Letterplate: wood, aluminium, (colored) acryl or any other 2 - 3 mm flat material
+- Letterplate swappable: other colors, different language. Mounted with magnets.
+
+### 2 mini
+- Cut out from one piece of massive hardwood by CNC.
+- 3D printed light containment grid.
 
 ## Diagrams
 more in /support
