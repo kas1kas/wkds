@@ -23,7 +23,7 @@ fi
 
 # Create the alias file
 # Check if alias.txt exists
-ALIAS_SOURCE="alias.txt"
+ALIAS_SOURCE="ds/alias.txt"
 if [ ! -f "$ALIAS_SOURCE" ]; then
     echo "Error: $ALIAS_SOURCE not found in current directory."
     exit 1
