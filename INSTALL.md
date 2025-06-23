@@ -4,8 +4,10 @@
 - enable ssh
 - set hostname
 - set wifi
-## 2 sudo raspi-config
+## 2 start and configure
+- sudo raspi-config
 - interface options - enable I2C
+- reboot
 ## 3 install packages
 - make sure you are in: /home/pi
 - sudo apt install git python3-pip
