@@ -1,4 +1,4 @@
-# woordklok v5.25
+# woordklok v5.26
 # for 11x10 and 16x16 grid
 import argparse
 import json
@@ -243,13 +243,15 @@ def index():
     initial_language = word_clock.language
     initial_clock_type = word_clock.clock_type
     initial_purist = word_clock.purist
-        
+    woordklok_name = word_clock.woordklok
+    
     return render_template(
         "index.html",
         initial_color=initial_color,
         initial_language=initial_language,
         initial_clock_type=initial_clock_type,
-        initial_purist=initial_purist
+        initial_purist=initial_purist,
+        woordklok_name = word_clock.woordklok
     )
 
 @app.route("/set_color", methods=["POST"])
